@@ -1,5 +1,4 @@
 ﻿using PuthagaUlagam.Common;
-using PuthagaUlagam.Data;
 using PuthagaUlagam.Logic;
 using System;
 using System.Linq;
@@ -13,16 +12,17 @@ namespace PuthagaUlagam
         {
             if (!IsPostBack)
             {
-                if (Session["RowIndex"] != null)
+                if (Session["RowIndex"] != null && Session["ISBN"] != null)
                 {
-                    int rowIndex = (int)Session["RowIndex"];
-                    Book book = operationBL.GetBookById(rowIndex);
+                    int isbn = (int)Session["ISBN"];
+                    Book book = operationBL.GetBookByIsbn(isbn);
                     if (book != null)
                     {
                         txtTitle.Text = book.Title;
                         txtAuthor.Text = book.Author;
                         txtISBN.Text = book.ISBN.ToString();
                         txtPrice.Text = book.Price.ToString();
+                        DateOfPublication.SelectedDate = book.Date;
                         DisplayDate.Text = book.Date.ToString("d");
                         txtBookCount.Text = book.Count.ToString();
                         btnAdd.Visible = false;
@@ -31,6 +31,7 @@ namespace PuthagaUlagam
                     }
 
                     Session["RowIndex"] = null;
+                    Session["ISBN"] = null;
                 }
                 else
                 {
@@ -60,17 +61,10 @@ namespace PuthagaUlagam
 
                 if (operationType == OperationType.Add)
                 {
-                    var repeatedISBN = DataContext.Books
-                        .FirstOrDefault(b => b.ISBN == bookdto.ISBN);
                     bool IsBookAdded = operationBL.AddBook(bookdto).IsSuccess;
-
-                    if (repeatedISBN == null && IsBookAdded)
+                    if (IsBookAdded)
                     {
                         lblErrorMessage.Text = Messages.BookAddSuccess;
-                    }
-                    else if (repeatedISBN != null)
-                    {
-                        lblErrorMessage.Text = Messages.ISBNAlreadyExist;
                     }
                     else
                     {
@@ -80,7 +74,6 @@ namespace PuthagaUlagam
                 else if (operationType == OperationType.Update)
                 {
                     bool IsUpdateSuccess = operationBL.UpdateBook(bookdto).IsSuccess;
-
                     if (!IsUpdateSuccess)
                     {
                         lblErrorMessage.Text = Messages.BookUpdateFail;
@@ -101,6 +94,7 @@ namespace PuthagaUlagam
             }
         }
 
+
         private BookDTO CreateBookDTO()
         {
             return new BookDTO
@@ -118,7 +112,8 @@ namespace PuthagaUlagam
         {
             return InputValidation.IsValidISBN(txtISBN.Text) &&
                    InputValidation.IsValidCount(txtBookCount.Text) &&
-                   InputValidation.IsValidPrice(txtPrice.Text);
+                   InputValidation.IsValidPrice(txtPrice.Text) &&
+                   InputValidation.IsValidDateOfPublication(DateOfPublication.SelectedDate);
         }
 
         private void ClearDataField()
