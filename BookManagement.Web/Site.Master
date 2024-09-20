@@ -6,16 +6,11 @@
 <head runat="server">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Book Management System</title>
-
-    <asp:PlaceHolder runat="server">
-        <%: Scripts.Render("~/bundles/modernizr") %>
-    </asp:PlaceHolder>
-
+    <title>Puthaga Ulagam</title>
 </head>
 <body>
     <form runat="server">
-        <div class="container body-content">
+        <div>
             <h1>Welcome to Puthaga-Ulagam</h1>
             <nav>
                 <div>
@@ -33,8 +28,5 @@
             </footer>
         </div>
     </form>
-    <asp:PlaceHolder runat="server">
-        <%: Scripts.Render("~/Scripts/bootstrap.js") %>
-    </asp:PlaceHolder>
 </body>
 </html>

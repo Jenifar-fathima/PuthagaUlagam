@@ -42,10 +42,11 @@ namespace PuthagaUlagam.Logic
                 if (rowsAffected > 0)
                 {
                     apiResponse.IsSuccess = true;
+                    apiResponse.Message = Messages.BookAddSuccess;
                 }
                 else
                 {
-                    apiResponse.IsSuccess = false;
+                    apiResponse.Message = Messages.BookAddFail;
                 }
             }
             return apiResponse;
@@ -65,6 +66,7 @@ namespace PuthagaUlagam.Logic
                 {
                     books.Add(new Book
                     {
+                        Id = Convert.ToInt32(reader["ID"]),
                         ISBN = Convert.ToInt32(reader["BookISBN"]),
                         Title = reader["BookName"].ToString(),
                         Author = reader["BookAuthor"].ToString(),
@@ -125,6 +127,26 @@ namespace PuthagaUlagam.Logic
                 }
             }
             return book;
+        }
+
+        public ApiResponse<bool> UniqueIsbnValidation(int bookIsbn)
+        {
+            using (SqlConnection connection = new SqlConnection("data source = .;database = book;integrated security = SSPI"))
+            {
+                string query = "SELECT COUNT(*) FROM Book WHERE BookISBN = @ISBN";
+                SqlCommand cmd = new SqlCommand(query, connection);
+
+                cmd.Parameters.AddWithValue("@ISBN", bookIsbn);
+                connection.Open();
+                int nCount = (int)cmd.ExecuteScalar();
+                if(nCount == 0)
+                {
+                    apiResponse.IsSuccess = true;
+                    return apiResponse;
+                }
+                apiResponse.Message = Messages.ISBNAlreadyExist;
+                return apiResponse;
+            }
         }
     }
 }

@@ -7,7 +7,7 @@ namespace PuthagaUlagam
 {
     public partial class AddUpdateBook : System.Web.UI.Page
     {
-        BookOperationBL operationBL = new BookOperationBL();
+        private readonly BookOperationBL operationBL = new BookOperationBL();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -52,7 +52,7 @@ namespace PuthagaUlagam
 
         private void HandleBookOperation(OperationType operationType)
         {
-            lblErrorMessage.Text = "";
+            lblErrorMessage.Text = " ";
 
             if (IsInputValid())
             {
@@ -60,31 +60,24 @@ namespace PuthagaUlagam
 
                 if (operationType == OperationType.Add)
                 {
-                    bool IsBookAdded = operationBL.AddBook(bookdto).IsSuccess;
-                    if (IsBookAdded)
+                    int nIsbn = int.Parse(txtISBN.Text);
+                    ApiResponse<bool> uniqueISBN = operationBL.UniqueIsbnValidation(nIsbn);
+                    
+                    if (uniqueISBN.IsSuccess)
                     {
-                        lblErrorMessage.Text = Messages.BookAddSuccess;
+                        ApiResponse<bool> addBook = operationBL.AddBook(bookdto);
+                        lblErrorMessage.Text = addBook.Message;
                     }
-                    else
-                    {
-                        lblErrorMessage.Text = Messages.BookAddFail;
-                    }
+                    lblErrorMessage.Text = uniqueISBN.Message;
                 }
+
                 else if (operationType == OperationType.Update)
                 {
-                    bool IsUpdateSuccess = operationBL.UpdateBook(bookdto).IsSuccess;
-                    if (!IsUpdateSuccess)
-                    {
-                        lblErrorMessage.Text = Messages.BookUpdateFail;
-                    }
-                    else
-                    {
-                        lblErrorMessage.Text = Messages.BookUpdateSuccess;
-                    }
+                    ApiResponse<bool> updateBook = operationBL.UpdateBook(bookdto);
+                    lblErrorMessage.Text = updateBook.Message;
 
                     Response.Redirect("ViewBook.aspx");
                 }
-
                 ClearDataField();
             }
             else
@@ -109,10 +102,10 @@ namespace PuthagaUlagam
 
         private bool IsInputValid()
         {
-            return InputValidation.IsValidISBN(txtISBN.Text) &&
-                   InputValidation.IsValidCount(txtBookCount.Text) &&
-                   InputValidation.IsValidPrice(txtPrice.Text) &&
-                   InputValidation.IsValidDateOfPublication(DateOfPublication.SelectedDate);
+            return  InputValidation.IsValidISBN(txtISBN.Text) &&
+                    InputValidation.IsValidCount(txtBookCount.Text) &&
+                    InputValidation.IsValidPrice(txtPrice.Text) &&
+                    InputValidation.IsValidDateOfPublication(DateOfPublication.SelectedDate);
         }
 
         private void ClearDataField()
