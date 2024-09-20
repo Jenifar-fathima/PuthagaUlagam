@@ -1,5 +1,4 @@
 ﻿using PuthagaUlagam.Common;
-using PuthagaUlagam.Data;
 using PuthagaUlagam.Logic;
 using System;
 using System.Linq;
@@ -8,21 +7,22 @@ namespace PuthagaUlagam
 {
     public partial class AddUpdateBook : System.Web.UI.Page
     {
-        BookOperationBL operationBL = new BookOperationBL();
+        private readonly BookOperationBL operationBL = new BookOperationBL();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                if (Session["RowIndex"] != null)
+                if (Session["ISBN"] != null)
                 {
-                    int rowIndex = (int)Session["RowIndex"];
-                    Book book = operationBL.GetBookById(rowIndex);
+                    int isbn = (int)Session["ISBN"];
+                    Book book = operationBL.GetBookByIsbn(isbn);
                     if (book != null)
                     {
                         txtTitle.Text = book.Title;
                         txtAuthor.Text = book.Author;
                         txtISBN.Text = book.ISBN.ToString();
                         txtPrice.Text = book.Price.ToString();
+                        DateOfPublication.SelectedDate = book.Date;
                         DisplayDate.Text = book.Date.ToString("d");
                         txtBookCount.Text = book.Count.ToString();
                         btnAdd.Visible = false;
@@ -30,7 +30,7 @@ namespace PuthagaUlagam
                         txtISBN.ReadOnly = true;
                     }
 
-                    Session["RowIndex"] = null;
+                    Session["ISBN"] = null;
                 }
                 else
                 {
@@ -52,7 +52,7 @@ namespace PuthagaUlagam
 
         private void HandleBookOperation(OperationType operationType)
         {
-            lblErrorMessage.Text = "";
+            lblErrorMessage.Text = " ";
 
             if (IsInputValid())
             {
@@ -60,39 +60,24 @@ namespace PuthagaUlagam
 
                 if (operationType == OperationType.Add)
                 {
-                    var repeatedISBN = DataContext.Books
-                        .FirstOrDefault(b => b.ISBN == bookdto.ISBN);
-                    bool IsBookAdded = operationBL.AddBook(bookdto).IsSuccess;
-
-                    if (repeatedISBN == null && IsBookAdded)
+                    int nIsbn = int.Parse(txtISBN.Text);
+                    ApiResponse<bool> uniqueISBN = operationBL.UniqueIsbnValidation(nIsbn);
+                    
+                    if (uniqueISBN.IsSuccess)
                     {
-                        lblErrorMessage.Text = Messages.BookAddSuccess;
+                        ApiResponse<bool> addBook = operationBL.AddBook(bookdto);
+                        lblErrorMessage.Text = addBook.Message;
                     }
-                    else if (repeatedISBN != null)
-                    {
-                        lblErrorMessage.Text = Messages.ISBNAlreadyExist;
-                    }
-                    else
-                    {
-                        lblErrorMessage.Text = Messages.BookAddFail;
-                    }
+                    lblErrorMessage.Text = uniqueISBN.Message;
                 }
+
                 else if (operationType == OperationType.Update)
                 {
-                    bool IsUpdateSuccess = operationBL.UpdateBook(bookdto).IsSuccess;
-
-                    if (!IsUpdateSuccess)
-                    {
-                        lblErrorMessage.Text = Messages.BookUpdateFail;
-                    }
-                    else
-                    {
-                        lblErrorMessage.Text = Messages.BookUpdateSuccess;
-                    }
+                    ApiResponse<bool> updateBook = operationBL.UpdateBook(bookdto);
+                    lblErrorMessage.Text = updateBook.Message;
 
                     Response.Redirect("ViewBook.aspx");
                 }
-
                 ClearDataField();
             }
             else
@@ -100,6 +85,7 @@ namespace PuthagaUlagam
                 InputValidationMessageMethod();
             }
         }
+
 
         private BookDTO CreateBookDTO()
         {
@@ -116,9 +102,10 @@ namespace PuthagaUlagam
 
         private bool IsInputValid()
         {
-            return InputValidation.IsValidISBN(txtISBN.Text) &&
-                   InputValidation.IsValidCount(txtBookCount.Text) &&
-                   InputValidation.IsValidPrice(txtPrice.Text);
+            return  InputValidation.IsValidISBN(txtISBN.Text) &&
+                    InputValidation.IsValidCount(txtBookCount.Text) &&
+                    InputValidation.IsValidPrice(txtPrice.Text) &&
+                    InputValidation.IsValidDateOfPublication(DateOfPublication.SelectedDate);
         }
 
         private void ClearDataField()

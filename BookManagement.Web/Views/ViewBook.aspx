@@ -4,6 +4,7 @@
     <h1>Book List</h1>
     <asp:GridView ID="TableBooks" runat="server" AutoGenerateColumns="False" >
         <Columns>
+            <asp:BoundField DataField="ID" HeaderText="ID" />
             <asp:BoundField DataField="Title" HeaderText="Title" />
             <asp:BoundField DataField="Author" HeaderText="Author" />
             <asp:BoundField DataField="ISBN" HeaderText="Book ISBN" />
