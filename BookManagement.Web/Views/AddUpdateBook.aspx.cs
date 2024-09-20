@@ -12,7 +12,7 @@ namespace PuthagaUlagam
         {
             if (!IsPostBack)
             {
-                if (Session["RowIndex"] != null && Session["ISBN"] != null)
+                if (Session["ISBN"] != null)
                 {
                     int isbn = (int)Session["ISBN"];
                     Book book = operationBL.GetBookByIsbn(isbn);
@@ -30,7 +30,6 @@ namespace PuthagaUlagam
                         txtISBN.ReadOnly = true;
                     }
 
-                    Session["RowIndex"] = null;
                     Session["ISBN"] = null;
                 }
                 else

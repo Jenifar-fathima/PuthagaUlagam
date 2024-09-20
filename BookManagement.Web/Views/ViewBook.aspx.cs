@@ -8,7 +8,7 @@ namespace PuthagaUlagam
 {
     public partial class ViewBook : Page
     {
-        BookOperationBL operationBL = new BookOperationBL();
+        private readonly BookOperationBL operationBL = new BookOperationBL();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -44,7 +44,6 @@ namespace PuthagaUlagam
 
             if (operationType == OperationType.Update)
             {
-                Session["RowIndex"] = rowIndex;
                 Session["ISBN"] = isbn;
                 Response.Redirect("AddUpdateBook.aspx");
             }

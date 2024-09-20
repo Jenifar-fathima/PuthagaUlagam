@@ -8,7 +8,7 @@ namespace PuthagaUlagam.Logic
 {
     public class BookOperationBL
     {
-        ApiResponse<bool> apiResponse = new ApiResponse<bool>();
+        private readonly ApiResponse<bool> apiResponse = new ApiResponse<bool>();
         
         public ApiResponse<bool> AddBook(BookDTO bookDto)
         {
@@ -98,7 +98,6 @@ namespace PuthagaUlagam.Logic
                 cmd.ExecuteNonQuery();
             }
         }
-
 
         public Book GetBookByIsbn(int bookIsbn)
         {
