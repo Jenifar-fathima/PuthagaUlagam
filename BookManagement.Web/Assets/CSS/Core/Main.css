@@ -1,1 +1,82 @@
-﻿
+﻿* {
+    padding: 0;
+    margin: 0;
+    font-family: monospace;
+    box-sizing: border-box; 
+}
+
+header {
+    height: 30vh; 
+}
+
+main {
+    min-height: auto; 
+}
+
+footer {
+    height: 5vh; 
+}
+
+header h1 {
+    text-align: center;
+    padding: .7%;
+    background: rgba(255, 175, 33, 0.9); 
+}
+
+.container {
+    background: rgba(0, 0, 0, 0.19) url('../../Images/bg3.jpg') no-repeat center center;
+    background-size: cover;
+    height: 100vh;
+}
+
+nav ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 0; 
+}
+
+    nav ul li {
+        margin: 0 1rem; 
+    }
+
+        nav ul li a {
+            text-decoration: none;
+            padding: 10px 20px;
+            border: #000000 3px solid;
+            border-radius: 20%;
+            background: rgba(255, 175, 33, 0.8); 
+            color: black;
+            transition: background 0.3s, color 0.3s; 
+        }
+
+            nav ul li a:hover {
+                background: #26a0fb;
+                color: wheat;
+            }
+
+main {
+    background: rgba(0, 0, 0, 0.65);
+    width: 50%;
+    text-align: center;
+    margin: auto;
+    padding: 2rem; 
+    border-radius: 10px;
+}
+
+    main input[type="text"] {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+footer {
+    text-align: center;
+    padding: .3%;
+    background: rgba(255, 175, 33, 0.9); 
+    width: 100%;
+}

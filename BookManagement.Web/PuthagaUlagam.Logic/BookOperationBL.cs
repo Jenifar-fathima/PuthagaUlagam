@@ -26,7 +26,7 @@ namespace PuthagaUlagam.Logic
                 ? "INSERT INTO Book (BookISBN, BookName, BookAuthor ,DateOfPublication, BookPrice, BookCount) VALUES (@BookISBN, @BookName, @BookAuthor ,@DateOfPublication, @BookPrice, @BookCount)"
                 : "UPDATE Book SET BookName = @BookName, BookAuthor = @BookAuthor, BookPrice = @BookPrice, DateOfPublication = @DateOfPublication, BookCount = @BookCount WHERE BookISBN = @BookISBN";
 
-            using (SqlConnection con = new SqlConnection("data source = .;database = book;integrated security = SSPI"))
+            using (SqlConnection con = new SqlConnection("Server=MS-NB0009; Database=book; User Id=sa; Password=password-123;"))
             {
                 SqlCommand cmd = new SqlCommand(query, con);
 
@@ -56,7 +56,7 @@ namespace PuthagaUlagam.Logic
         {
             List<Book> books = new List<Book>();
             string query = "SELECT * FROM Book";
-            using (SqlConnection con = new SqlConnection("data source = .;database = book;integrated security = SSPI"))
+            using (SqlConnection con = new SqlConnection("Server=MS-NB0009; Database=book; User Id=sa; Password=password-123;"))
             {
                 SqlCommand cmd = new SqlCommand(query, con);
                 con.Open();
@@ -66,7 +66,7 @@ namespace PuthagaUlagam.Logic
                 {
                     books.Add(new Book
                     {
-                        Id = Convert.ToInt32(reader["ID"]),
+                        Id = Convert.ToInt32(reader["BookID"]),
                         ISBN = Convert.ToInt32(reader["BookISBN"]),
                         Title = reader["BookName"].ToString(),
                         Author = reader["BookAuthor"].ToString(),
@@ -82,7 +82,7 @@ namespace PuthagaUlagam.Logic
         public void DeleteBook(int bookIsbn)
         {
             string query = "DELETE FROM Book WHERE BookISBN = @ISBN";
-            using (SqlConnection con = new SqlConnection("data source = .;database = book;integrated security = SSPI"))
+            using (SqlConnection con = new SqlConnection("Server=MS-NB0009; Database=book; User Id=sa; Password=password-123;"))
             {
                 SqlCommand cmd = new SqlCommand(query, con);
 
@@ -105,7 +105,7 @@ namespace PuthagaUlagam.Logic
         {
             Book book = null;
 
-            using (SqlConnection connection = new SqlConnection("data source = .;database = book;integrated security = SSPI"))
+            using (SqlConnection connection = new SqlConnection("Server=MS-NB0009; Database=book; User Id=sa; Password=password-123;"))
             {
                 string query = "SELECT * FROM Book WHERE BookISBN = @ISBN";
                 SqlCommand command = new SqlCommand(query, connection);
@@ -131,7 +131,7 @@ namespace PuthagaUlagam.Logic
 
         public ApiResponse<bool> UniqueIsbnValidation(int bookIsbn)
         {
-            using (SqlConnection connection = new SqlConnection("data source = .;database = book;integrated security = SSPI"))
+            using (SqlConnection connection = new SqlConnection("Server=MS-NB0009; Database=book; User Id=sa; Password=password-123;"))
             {
                 string query = "SELECT COUNT(*) FROM Book WHERE BookISBN = @ISBN";
                 SqlCommand cmd = new SqlCommand(query, connection);
