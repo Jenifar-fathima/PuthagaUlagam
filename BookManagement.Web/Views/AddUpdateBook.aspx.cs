@@ -18,6 +18,7 @@ namespace PuthagaUlagam
                     Book book = operationBL.GetBookByIsbn(isbn);
                     if (book != null)
                     {
+                        lblAddOrUpdateTitle.Text = "Update Book";
                         txtTitle.Text = book.Title;
                         txtAuthor.Text = book.Author;
                         txtISBN.Text = book.ISBN.ToString();
@@ -34,6 +35,7 @@ namespace PuthagaUlagam
                 }
                 else
                 {
+                    lblAddOrUpdateTitle.Text = "Add Book";
                     btnUpdate.Visible = false;
                     btnAdd.Visible = true;
                 }

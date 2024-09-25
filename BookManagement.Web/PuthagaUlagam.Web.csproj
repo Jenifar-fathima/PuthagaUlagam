@@ -101,6 +101,12 @@
   <ItemGroup>
     <Content Include="Assets\CSS\Core\Main.css" />
     <Content Include="Assets\CSS\Theme\Primary.css" />
+    <Content Include="Assets\Images\bg1.jfif" />
+    <Content Include="Assets\Images\bg2.jpg" />
+    <Content Include="Assets\Images\bg3.jpg" />
+    <Content Include="Assets\Images\bg3.png" />
+    <Content Include="Assets\Images\bg4.jfif" />
+    <Content Include="Assets\Images\img1.png" />
     <Content Include="Content\Application.css" />
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
@@ -184,7 +190,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Assets\Images\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -210,7 +215,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>55510</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44332/</IISUrl>
+          <IISUrl>http://localhost:44332/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
