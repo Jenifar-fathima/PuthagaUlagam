@@ -1,6 +1,7 @@
 ﻿using PuthagaUlagam.Common;
 using PuthagaUlagam.Logic;
 using System;
+using System.Data;
 using System.Linq;
 
 namespace PuthagaUlagam
@@ -12,35 +13,39 @@ namespace PuthagaUlagam
         {
             if (!IsPostBack)
             {
-                if (Session["ISBN"] != null)
+                if (Session["bookISBN"] != null)
                 {
-                    int isbn = (int)Session["ISBN"];
-                    Book book = operationBL.GetBookByIsbn(isbn);
-                    if (book != null)
+                    int isbn = (int)Session["bookISBN"];
+                    DataTable bookToEdit = operationBL.GetBookByIsbn(isbn);
+
+                    if (bookToEdit != null && bookToEdit.Rows.Count > 0)
                     {
+                        DataRow bookRow = bookToEdit.Rows[0];
+
                         lblAddOrUpdateTitle.Text = "Update Book";
-                        txtTitle.Text = book.Title;
-                        txtAuthor.Text = book.Author;
-                        txtISBN.Text = book.ISBN.ToString();
-                        txtPrice.Text = book.Price.ToString();
-                        DateOfPublication.SelectedDate = book.Date;
-                        DisplayDate.Text = book.Date.ToString("d");
-                        txtBookCount.Text = book.Count.ToString();
-                        btnAdd.Visible = false;
-                        btnUpdate.Visible = true;
-                        txtISBN.ReadOnly = true;
+                        txtTitle.Text = bookRow["BookName"].ToString(); 
+                        txtAuthor.Text = bookRow["BookAuthor"].ToString(); 
+                        txtISBN.Text = bookRow["BookISBN"].ToString(); 
+                        txtPrice.Text = bookRow["BookPrice"].ToString(); 
+                        DateOfPublication.SelectedDate = Convert.ToDateTime(bookRow["DateOfPublication"]); 
+                        DisplayDate.Text = Convert.ToDateTime(bookRow["DateOfPublication"]).ToString("d"); 
+                        txtBookCount.Text = bookRow["BookCount"].ToString(); 
+                        btnAdd.Visible = false; 
+                        btnUpdate.Visible = true; 
+                        txtISBN.ReadOnly = true; 
                     }
 
-                    Session["ISBN"] = null;
+                    Session["bookISBN"] = null;
                 }
                 else
                 {
                     lblAddOrUpdateTitle.Text = "Add Book";
-                    btnUpdate.Visible = false;
-                    btnAdd.Visible = true;
+                    btnUpdate.Visible = false; 
+                    btnAdd.Visible = true; 
                 }
             }
         }
+
 
         protected void btnAdd_Click(object sender, EventArgs e)
         {
@@ -68,9 +73,9 @@ namespace PuthagaUlagam
                     if (uniqueISBN.IsSuccess)
                     {
                         ApiResponse<bool> addBook = operationBL.AddBook(bookdto);
-                        lblErrorMessage.Text = addBook.Message;
+                        lblErrorMessage.Text += addBook.Message;
                     }
-                    lblErrorMessage.Text = uniqueISBN.Message;
+                    lblErrorMessage.Text += uniqueISBN.Message;
                 }
 
                 else if (operationType == OperationType.Update)

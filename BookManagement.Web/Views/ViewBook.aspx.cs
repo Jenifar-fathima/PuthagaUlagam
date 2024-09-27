@@ -1,6 +1,7 @@
 ﻿using PuthagaUlagam.Common;
 using PuthagaUlagam.Logic;
 using System;
+using System.Data;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -16,13 +17,11 @@ namespace PuthagaUlagam
                 LoadBooks();
             }
         }
-
-        private void LoadBooks()
+        public void LoadBooks()
         {
             TableBooks.DataSource = operationBL.GetBooks();
             TableBooks.DataBind();
         }
-
         protected void EditBtn(object sender, EventArgs e)
         {
             HandleBookButton(sender, e, OperationType.Update);
@@ -40,11 +39,11 @@ namespace PuthagaUlagam
             int rowIndex = row.RowIndex;
 
             var books = operationBL.GetBooks();
-            int isbn = books[rowIndex].ISBN;
+            int isbn = Convert.ToInt32(books.Rows[rowIndex]["BookISBN"]);
 
             if (operationType == OperationType.Update)
             {
-                Session["ISBN"] = isbn;
+                Session["bookISBN"] = isbn;
                 Response.Redirect("AddUpdateBook.aspx");
             }
             else if (operationType == OperationType.Delete)
