@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="PuthagaUlagam.Web.SiteMaster" %>
+﻿﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="PuthagaUlagam.Web.SiteMaster" %>
 
 <!DOCTYPE html>
 
@@ -15,20 +15,24 @@
     <form runat="server">
         <div class="container">
             <header>
-                <h1>Puthaga Ulagam----Store of knowledge</h1>
-            </header>
-
-            <main>
+                <div>
+                    <h1>Puthaga Ulagam-Store of knowledge</h1>
+                </div>
                 <div>
                     <nav>
                         <div>
                             <ul>
-                                <li class="nav-item"><a class="nav-link" runat="server" href="~/Views/AddUpdateBook">Add Book</a></li>
-                                <li class="nav-item"><a class="nav-link" runat="server" href="~/Views/ViewBook">View Book</a></li>
+                                <li><a runat="server" href="~/">Home</a></li>
+                                <li><a runat="server" href="~/Views/AddUpdateBook">Add Book</a></li>
+                                <li><a runat="server" href="~/Views/ViewBook">View Book</a></li>
                             </ul>
                         </div>
                     </nav>
                 </div>
+            </header>
+
+            <main>
+
                 <div class="main-content">
                     <asp:ContentPlaceHolder ID="MainContent" runat="server">
                     </asp:ContentPlaceHolder>
