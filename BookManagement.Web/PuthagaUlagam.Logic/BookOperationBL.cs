@@ -2,7 +2,6 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Web.Configuration;
 
 namespace PuthagaUlagam.Logic
 {
@@ -24,7 +23,6 @@ namespace PuthagaUlagam.Logic
         private ApiResponse<bool> AddOrUpdateBook(OperationType operationType, BookDTO bookDto)
         {
             ApiResponse<bool> apiResponse = new ApiResponse<bool>();
-
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {

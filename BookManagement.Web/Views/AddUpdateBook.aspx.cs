@@ -2,7 +2,6 @@
 using PuthagaUlagam.Logic;
 using System;
 using System.Data;
-using System.Linq;
 
 namespace PuthagaUlagam
 {
@@ -23,16 +22,16 @@ namespace PuthagaUlagam
                         DataRow bookRow = bookToEdit.Rows[0];
 
                         lblAddOrUpdateTitle.Text = "Update Book";
-                        txtTitle.Text = bookRow["BookName"].ToString(); 
-                        txtAuthor.Text = bookRow["BookAuthor"].ToString(); 
-                        txtISBN.Text = bookRow["BookISBN"].ToString(); 
-                        txtPrice.Text = bookRow["BookPrice"].ToString(); 
-                        DateOfPublication.SelectedDate = Convert.ToDateTime(bookRow["DateOfPublication"]); 
-                        DisplayDate.Text = Convert.ToDateTime(bookRow["DateOfPublication"]).ToString("d"); 
-                        txtBookCount.Text = bookRow["BookCount"].ToString(); 
-                        btnAdd.Visible = false; 
-                        btnUpdate.Visible = true; 
-                        txtISBN.ReadOnly = true; 
+                        txtTitle.Text = bookRow["BookName"].ToString();
+                        txtAuthor.Text = bookRow["BookAuthor"].ToString();
+                        txtISBN.Text = bookRow["BookISBN"].ToString();
+                        txtPrice.Text = bookRow["BookPrice"].ToString();
+                        DateOfPublication.SelectedDate = Convert.ToDateTime(bookRow["DateOfPublication"]);
+                        DisplayDate.Text = Convert.ToDateTime(bookRow["DateOfPublication"]).ToString("d");
+                        txtBookCount.Text = bookRow["BookCount"].ToString();
+                        btnAdd.Visible = false;
+                        btnUpdate.Visible = true;
+                        txtISBN.ReadOnly = true;
                     }
 
                     Session["bookISBN"] = null;
@@ -40,8 +39,8 @@ namespace PuthagaUlagam
                 else
                 {
                     lblAddOrUpdateTitle.Text = "Add Book";
-                    btnUpdate.Visible = false; 
-                    btnAdd.Visible = true; 
+                    btnUpdate.Visible = false;
+                    btnAdd.Visible = true;
                 }
             }
         }
@@ -69,7 +68,7 @@ namespace PuthagaUlagam
                 {
                     int nIsbn = int.Parse(txtISBN.Text);
                     ApiResponse<bool> uniqueISBN = operationBL.UniqueIsbnValidation(nIsbn);
-                    
+
                     if (uniqueISBN.IsSuccess)
                     {
                         ApiResponse<bool> addBook = operationBL.AddBook(bookdto);
@@ -109,7 +108,7 @@ namespace PuthagaUlagam
 
         private bool IsInputValid()
         {
-            return  InputValidation.IsValidISBN(txtISBN.Text) &&
+            return InputValidation.IsValidISBN(txtISBN.Text) &&
                     InputValidation.IsValidCount(txtBookCount.Text) &&
                     InputValidation.IsValidPrice(txtPrice.Text) &&
                     InputValidation.IsValidDateOfPublication(DateOfPublication.SelectedDate);

@@ -12,10 +12,10 @@
                     <asp:BoundField DataField="BookID" HeaderText="ID" />
                     <asp:BoundField DataField="BookName" HeaderText="Title" />
                     <asp:BoundField DataField="BookAuthor" HeaderText="Author" />
-                    <asp:BoundField DataField="BookISBN" HeaderText="Book Isbn" />
+                    <asp:BoundField DataField="BookISBN" HeaderText="ISBN" />
                     <asp:BoundField DataField="BookPrice" HeaderText="Price" />
                     <asp:BoundField DataField="DateOfPublication" HeaderText="Date" />
-                    <asp:BoundField DataField="BookCount" HeaderText="Book count" />
+                    <asp:BoundField DataField="BookCount" HeaderText="Count" />
                     <asp:TemplateField HeaderText="Edit">
                         <ItemTemplate>
                             <asp:Button ID="btn_Edit" runat="server" Text="Edit" OnClick="EditBtn" />
